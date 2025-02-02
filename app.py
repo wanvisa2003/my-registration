@@ -52,6 +52,13 @@ def register():
         email = data['email']
         image = request.files.get('image')
 
+        # Capitalize first letter and make other letters lowercase
+        first_name = data['first_name'].strip()
+        last_name = data['last_name'].strip()
+
+        first_name = first_name[0].upper() + first_name[1:].lower() if first_name else ""
+        last_name = last_name[0].upper() + last_name[1:].lower() if last_name else ""
+
         # Check for duplicate email in REGISTRATION_FILE
         with open(REGISTRATION_FILE, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
@@ -75,7 +82,7 @@ def register():
         with open(REGISTRATION_FILE, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow([
-                data['first_name'], data['last_name'], data['company_name'],
+                first_name, last_name, data['company_name'],
                 data['position'], email, data['country_code'], data['phone'],
                 image_path, timestamp, "pre-register", "pending", ""  # Default: pending, No code
             ])
@@ -84,6 +91,7 @@ def register():
         return redirect(url_for("success"))
 
     return render_template("register.html")
+
 
 
 @app.route("/success")

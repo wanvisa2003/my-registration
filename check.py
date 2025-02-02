@@ -41,7 +41,15 @@ def register():
         code = data['code']
         timestamp = datetime.now().isoformat()
 
-        # 🔹 **ตรวจสอบ email และ code ซ้ำ**
+        # Capitalize first letter and make other letters lowercase
+        first_name = data['first_name'].strip()
+        last_name = data['last_name'].strip()
+
+        first_name = first_name[0].upper() + first_name[1:].lower() if first_name else ""
+        last_name = last_name[0].upper() + last_name[1:].lower() if last_name else ""
+
+
+       
         with open(SELECTED_FILE, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -52,13 +60,13 @@ def register():
                     flash("This code has already been used. Please contact Rungaradee at 0613288930.", "danger")
                     return redirect(url_for("register"))
 
-        # 🔹 **บันทึกข้อมูลลง selected.csv (คนที่ยืนยันสิทธิ์)**
+       
         with open(SELECTED_FILE, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow([first_name, last_name, company_name, position, email, 
                              country_code, phone, code, timestamp, "register"])
 
-        # 🔹 **ส่งอีเมลยืนยัน**
+      
         subject = "Registration Successful"
         body = (f"Dear {first_name} {last_name},\n\n"
                 f"You have successfully registered with the code: {code}. "

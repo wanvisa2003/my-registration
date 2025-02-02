@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .form-select {
+            border-radius: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ced4da;
+            background-color: #f8f9fa;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            border-radius: 30px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-secondary {
+            border-radius: 30px;
+            margin-top: 10px;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .social-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Registration Form</h1>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div>
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Registration Form -->
+        <form method="POST" action="/register" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="first_name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter your first name" required>
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your last name" required>
+            </div>
+            <div class="mb-3">
+                <label for="company_name" class="form-label">Company Name</label>
+                <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Enter your company name" required>
+            </div>
+            <div class="mb-3">
+                <label for="position" class="form-label">Position</label>
+                <input type="text" class="form-control" id="position" name="position" placeholder="Enter your position" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+                <label for="country_code" class="form-label">Country Code</label>
+                <select class="form-select" id="country_code" name="country_code" required>
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+66">+66 (Thailand)</option>
+                    <option value="+91">+91 (India)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            <div class="mb-3">
+                <p class="instruction-text">
+                    Please upload an image showing that you have followed us on LinkedIn or shared our post on Facebook:
+                </p>
+                <div class="social-buttons">
+                    <a href="https://www.linkedin.com/company/pstc-academy/" class="btn btn-linkedin" target="_blank">Follow on LinkedIn</a>
+                    <a href="https://www.facebook.com/share/19yS1hFo7j/" class="btn btn-facebook" target="_blank">Share on Facebook</a>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload Image</label>
+                <div class="custom-file-upload">
+                    <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg, image/gif" required onchange="previewImage(event)">
+                    <label id="uploadLabel" for="image" class="upload-btn">Choose File</label>
+                    <span id="file-name" class="ml-2 text-muted">No file chosen</span> <!-- แสดงชื่อไฟล์ -->
+                </div>
+                <div id="previewContainer" style="display: none; margin-top: 10px;">
+                    <img id="imagePreview" src="#" alt="Uploaded Image" 
+                         style="width: 100px; height: auto; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                </div>
+            </div>            
+            
+            
+            <style>
+                /* Modern ฟอนต์และสี */
+                body {
+                    font-family: 'Roboto', Arial, sans-serif;
+                    color: #333333;
+                    background-color: #f9fafb;
+                }
+            
+                .instruction-text {
+                    font-size: 16px;
+                    color: #666666;
+                    margin-bottom: 15px;
+                    text-align: center;
+                    line-height: 1.5;
+                }
+            
+                /* ปุ่ม Social Media */
+                .social-buttons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 20px;
+                    margin-bottom: 20px;
+                }
+            
+                .btn-linkedin,
+                .btn-facebook {
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+            
+                .btn-linkedin {
+                    background: linear-gradient(90deg, #0077b5, #005582);
+                    color: #ffffff;
+                }
+            
+                .btn-linkedin:hover {
+                    background: linear-gradient(90deg, #005582, #003f4f);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                }
+            
+                .btn-facebook {
+                    background: linear-gradient(90deg, #3b5998, #2d4373);
+                    color: #ffffff;
+                }
+            
+                .btn-facebook:hover {
+                    background: linear-gradient(90deg, #2d4373, #1d2f4d);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                }
+            
+                /* ปุ่ม Choose File */
+                .custom-file-upload input[type="file"] {
+                    display: none;
+                }
+            
+                .custom-file-upload label {
+                    display: inline-block;
+                    background: linear-gradient(90deg, #007bff, #0056b3);
+                    color: white;
+                    padding: 12px 25px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: bold;
+                    text-align: center;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+            
+                .custom-file-upload label:hover {
+                    background: linear-gradient(90deg, #0056b3, #003f7d);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                }
+            
+                /* ปุ่ม Register */
+                button[type="submit"] {
+                    width: 100%;
+                    background: linear-gradient(90deg, #1e90ff, #0056b3);
+                    color: white;
+                    padding: 15px;
+                    border: none;
+                    border-radius: 30px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+            
+                button[type="submit"]:hover {
+                    background: linear-gradient(90deg, #0056b3, #003f7d);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                }
+            </style>
+            
+            
+            <button type="submit" class="btn btn-primary w-100 mt-4">Register</button>
+        </form>
+    </div>
+    <script>
+        function previewImage(event) {
+            let file = event.target.files[0];
+            let registerBtn = document.querySelector("button[type='submit']");
+            let fileNameSpan = document.getElementById("file-name");
+            let imagePreview = document.getElementById("imagePreview");
+            let previewContainer = document.getElementById("previewContainer");
+    
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                registerBtn.classList.remove("btn-primary");
+                registerBtn.classList.add("btn-success");
+    
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileNameSpan.textContent = "No file chosen";
+                registerBtn.classList.remove("btn-success");
+                registerBtn.classList.add("btn-primary");
+                previewContainer.style.display = "none";
+            }
+        }
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+venv/
+uploads/
+static/
+__pycache__/
+*.log
